@@ -1,480 +1,275 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FiveM Vector Tool</title>
-  <style>
-    :root{
-      --bg:#0b1220; --card:#0f1b31; --muted:#8ea3c6; --text:#e8f0ff;
-      --accent:#4da3ff; --ok:#37d67a; --warn:#ffcc66; --bad:#ff5c5c;
-      --border:#1e2c4d;
-    }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(900px 500px at 20% 0%, #14264a 0%, var(--bg) 60%);
-      color:var(--text);
-      padding:24px;
-    }
-    .wrap{ max-width:980px; margin:0 auto; display:grid; gap:16px; }
-    .header{
-      display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between;
-    }
-    h1{ margin:0; font-size:22px; letter-spacing:0.2px; }
-    .sub{ color:var(--muted); font-size:13px; }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap:16px;
-    }
-    @media (max-width:900px){ .grid{ grid-template-columns:1fr; } }
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:16px;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.25);
-    }
-    label{ display:block; font-size:12px; color:var(--muted); margin-bottom:8px; }
-    textarea{
-      width:100%; min-height:120px; resize:vertical;
-      background:#0a1427; border:1px solid var(--border); border-radius:12px;
-      color:var(--text); padding:12px; font-size:14px; line-height:1.35;
-      outline:none;
-    }
-    textarea:focus{ border-color: rgba(77,163,255,0.7); box-shadow:0 0 0 4px rgba(77,163,255,0.15); }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .btn{
-      border:1px solid var(--border);
-      background:#0a1427;
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:600;
-      font-size:13px;
-      transition: transform 0.06s ease, border-color 0.15s ease;
-    }
-    .btn:hover{ border-color: rgba(77,163,255,0.55); }
-    .btn:active{ transform: translateY(1px); }
-    .btn.primary{ background: rgba(77,163,255,0.15); border-color: rgba(77,163,255,0.45); }
-    .btn.good{ background: rgba(55,214,122,0.14); border-color: rgba(55,214,122,0.35); }
-    .btn.warn{ background: rgba(255,204,102,0.12); border-color: rgba(255,204,102,0.35); }
-    .btn.bad{ background: rgba(255,92,92,0.12); border-color: rgba(255,92,92,0.35); }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 10px; border-radius:999px;
-      background:#0a1427; border:1px solid var(--border);
-      font-size:12px; color:var(--muted);
-    }
-    .pill b{ color:var(--text); font-weight:700; }
-    .status{ margin-top:10px; font-size:13px; color:var(--muted); }
-    .status.ok{ color: var(--ok); }
-    .status.bad{ color: var(--bad); }
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:12px;
-    }
-    .kv .field{
-      background:#0a1427;
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:10px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .kv .field .k{ color:var(--muted); font-size:12px; }
-    .kv .field .v{ font-weight:800; font-variant-numeric: tabular-nums; }
-    .kv .field button{
-      padding:7px 9px;
-      border-radius:10px;
-      font-size:12px;
-    }
-    .out{
-      margin-top:12px;
-      background:#0a1427;
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size:13px;
-      color:#d9e6ff;
-      white-space:pre-wrap;
-      word-break:break-word;
-    }
-    .history{
-      display:flex; flex-direction:column; gap:8px;
-      margin-top:10px;
-      max-height:290px;
-      overflow:auto;
-      padding-right:4px;
-    }
-    .history button{
-      text-align:left;
-      width:100%;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size:12px;
-      padding:10px 10px;
-      border-radius:12px;
-      background:#0a1427;
-      border:1px solid var(--border);
-      color:var(--text);
-      cursor:pointer;
-    }
-    .history button:hover{ border-color: rgba(77,163,255,0.55); }
-    .foot{ color:var(--muted); font-size:12px; margin-top:8px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FiveM Vector Tool</title>
+
+<style>
+:root{
+--bg:#0b1220;
+--card:#0f1b31;
+--muted:#8ea3c6;
+--text:#e8f0ff;
+--border:#1e2c4d;
+--ok:#37d67a;
+--bad:#ff5c5c;
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+background:radial-gradient(900px 500px at 20% 0%, #14264a 0%, var(--bg) 60%);
+color:var(--text);
+padding:24px
+}
+
+.wrap{
+max-width:900px;
+margin:0 auto;
+display:grid;
+gap:16px
+}
+
+.card{
+background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01));
+border:1px solid var(--border);
+border-radius:14px;
+padding:16px
+}
+
+textarea{
+width:100%;
+min-height:120px;
+resize:vertical;
+background:#0a1427;
+border:1px solid var(--border);
+border-radius:12px;
+color:var(--text);
+padding:12px;
+font-size:14px;
+outline:none
+}
+
+.row{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:10px
+}
+
+.btn{
+border:1px solid var(--border);
+background:#0a1427;
+color:var(--text);
+padding:10px 12px;
+border-radius:12px;
+cursor:pointer;
+font-size:13px
+}
+
+.btn:hover{
+border-color:#4da3ff
+}
+
+.kv{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:14px
+}
+
+.field{
+background:#0a1427;
+border:1px solid var(--border);
+border-radius:12px;
+padding:10px;
+display:flex;
+align-items:center;
+justify-content:space-between
+}
+
+.k{
+color:var(--muted);
+font-size:12px
+}
+
+.v{
+font-weight:800
+}
+
+.out{
+margin-top:14px;
+background:#0a1427;
+border:1px solid var(--border);
+border-radius:12px;
+padding:12px;
+font-family:monospace;
+font-size:13px
+}
+
+.status{
+margin-top:10px;
+font-size:13px
+}
+
+.status.ok{color:var(--ok)}
+.status.bad{color:var(--bad)}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="header">
-      <div>
-        <h1>FiveM Vector Tool</h1>
-        <div class="sub">Paste a vector2/3/4 (or just numbers) → get clean coords + copy-ready snippets.</div>
-      </div>
-      <div class="row">
-        <span class="pill">Detected: <b id="detType">—</b></span>
-        <span class="pill">Numbers: <b id="detCount">0</b></span>
-      </div>
-    </div>
 
-    <div class="grid">
-      <div class="card">
-        <label for="inp">Input</label>
-        <textarea id="inp" placeholder="Examples:
-vector4(468.52, -928.83, 28.45, 87.8)
-vector3(120.87, -736.17, 242.15)
-121.71, -738.91, 242.15, 106.81
-vec2(100.0, 200.0)"></textarea>
+<div class="wrap">
 
-        <div class="row" style="margin-top:10px;">
-          <button class="btn primary" id="btnParse">Parse</button>
-          <button class="btn" id="btnPasteDemo">Paste demo</button>
-          <button class="btn bad" id="btnClear">Clear</button>
-        </div>
+<div class="card">
 
-        <div id="status" class="status">Waiting for input…</div>
+<h2>FiveM Vector Tool</h2>
 
-        <div class="kv">
-          <div class="field">
-            <div>
-              <div class="k">X</div>
-              <div class="v" id="xVal">—</div>
-            </div>
-            <button class="btn" data-copy="x">Copy</button>
-          </div>
-          <div class="field">
-            <div>
-              <div class="k">Y</div>
-              <div class="v" id="yVal">—</div>
-            </div>
-            <button class="btn" data-copy="y">Copy</button>
-          </div>
-          <div class="field">
-            <div>
-              <div class="k">Z</div>
-              <div class="v" id="zVal">—</div>
-            </div>
-            <button class="btn" data-copy="z">Copy</button>
-          </div>
-          <div class="field">
-            <div>
-              <div class="k">W (Heading)</div>
-              <div class="v" id="wVal">—</div>
-            </div>
-            <button class="btn" data-copy="w">Copy</button>
-          </div>
-        </div>
+<textarea id="inp" placeholder="vector4(468.52, -928.83, 28.45, 87.8)"></textarea>
 
-        <label style="margin-top:14px;">Outputs</label>
-        <div class="row" style="margin-bottom:10px;">
-          <button class="btn good" id="copyV2">Copy vector2</button>
-          <button class="btn good" id="copyV3">Copy vector3</button>
-          <button class="btn good" id="copyV4">Copy vector4</button>
-          <button class="btn warn" id="copyTP">Copy /tp</button>
-          <button class="btn" id="copyHeading">Copy heading snippet</button>
-        </div>
+<div class="row">
+<button class="btn" id="btnParse">Parse</button>
+<button class="btn" id="btnClear">Clear</button>
+<button class="btn" id="btnDemo">Demo</button>
+</div>
 
-        <div class="out" id="outBox">—</div>
-        <div class="foot">
-          Tip: It will auto-parse while you type (debounced). Accepts vector/vec, or raw numbers.
-        </div>
-      </div>
+<div id="status" class="status">Waiting for input</div>
 
-      <div class="card">
-        <label>Recent (click to load)</label>
-        <div class="history" id="history"></div>
-        <div class="row" style="margin-top:10px;">
-          <button class="btn bad" id="clearHistory">Clear history</button>
-        </div>
-        <div class="foot">
-          Stored in your browser (localStorage). Last 10 entries.
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="kv">
+
+<div class="field">
+<div>
+<div class="k">X</div>
+<div class="v" id="xVal">—</div>
+</div>
+<button class="btn" data-copy="x">Copy</button>
+</div>
+
+<div class="field">
+<div>
+<div class="k">Y</div>
+<div class="v" id="yVal">—</div>
+</div>
+<button class="btn" data-copy="y">Copy</button>
+</div>
+
+<div class="field">
+<div>
+<div class="k">Z</div>
+<div class="v" id="zVal">—</div>
+</div>
+<button class="btn" data-copy="z">Copy</button>
+</div>
+
+<div class="field">
+<div>
+<div class="k">W</div>
+<div class="v" id="wVal">—</div>
+</div>
+<button class="btn" data-copy="w">Copy</button>
+</div>
+
+</div>
+
+<div class="row">
+
+<button class="btn" id="copyV2">Copy vector2</button>
+<button class="btn" id="copyV3">Copy vector3</button>
+<button class="btn" id="copyV4">Copy vector4</button>
+<button class="btn" id="copyTP">Copy /tp</button>
+<button class="btn" id="copyHeading">Copy heading</button>
+
+</div>
+
+<div class="out" id="outBox">—</div>
+
+</div>
+
+</div>
 
 <script>
-(() => {
-  const $ = (id) => document.getElementById(id);
 
-  const inp = $("inp");
-  const status = $("status");
-  const outBox = $("outBox");
-  const detType = $("detType");
-  const detCount = $("detCount");
+const inp=document.getElementById("inp")
+const status=document.getElementById("status")
 
-  const xVal = $("xVal");
-  const yVal = $("yVal");
-  const zVal = $("zVal");
-  const wVal = $("wVal");
+const xVal=document.getElementById("xVal")
+const yVal=document.getElementById("yVal")
+const zVal=document.getElementById("zVal")
+const wVal=document.getElementById("wVal")
 
-  const HISTORY_KEY = "fivem_vector_tool_history_v1";
-  const MAX_HISTORY = 10;
+let current={x:null,y:null,z:null,w:null}
 
-  let current = { x:null, y:null, z:null, w:null, type:null, raw:"" };
+function extractNumbers(text){
+const re=/[-+]?(?:\d+\.?\d*|\.\d+)/g
+const m=text.match(re)||[]
+return m.map(Number)
+}
 
-  function toFixedSmart(n) {
-    if (n === null || n === undefined || Number.isNaN(n)) return "—";
-    // keep decimals if provided; clamp crazy long floats
-    const s = String(n);
-    if (s.includes("e") || s.includes("E")) return Number(n).toFixed(6).replace(/0+$/,"").replace(/\.$/,"");
-    const parts = s.split(".");
-    if (parts.length === 1) return s;
-    const dec = parts[1].slice(0, 6); // up to 6 decimals
-    return parts[0] + (dec.length ? "." + dec.replace(/0+$/,"") : "");
-  }
+function parse(){
 
-  function extractNumbers(text) {
-    // captures -123, 123.45, .45, -0.5 etc.
-    const re = /[-+]?(?:\d+\.?\d*|\.\d+)/g;
-    const matches = text.match(re) || [];
-    return matches.map(m => Number(m));
-  }
+const nums=extractNumbers(inp.value)
 
-  function detectVectorType(text, count) {
-    const t = text.toLowerCase();
-    if (t.includes("vector4") || t.includes("vec4") || count >= 4) return "vector4";
-    if (t.includes("vector3") || t.includes("vec3") || count === 3) return "vector3";
-    if (t.includes("vector2") || t.includes("vec2") || count === 2) return "vector2";
-    // fallback by count
-    if (count === 4) return "vector4";
-    if (count === 3) return "vector3";
-    if (count === 2) return "vector2";
-    return "unknown";
-  }
+if(nums.length<2){
+status.className="status bad"
+status.textContent="Need at least X and Y"
+return
+}
 
-  function parseInput(text) {
-    const nums = extractNumbers(text);
-    detCount.textContent = String(nums.length);
+current.x=nums[0]
+current.y=nums[1]
+current.z=nums[2]??null
+current.w=nums[3]??null
 
-    if (nums.length < 2) {
-      detType.textContent = "—";
-      return { ok:false, msg:"Paste at least X and Y (2 numbers).", data:null };
-    }
+xVal.textContent=current.x
+yVal.textContent=current.y
+zVal.textContent=current.z??"—"
+wVal.textContent=current.w??"—"
 
-    const type = detectVectorType(text, nums.length);
-    detType.textContent = type === "unknown" ? "unknown" : type;
+status.className="status ok"
+status.textContent="Parsed successfully"
 
-    const x = nums[0];
-    const y = nums[1];
-    const z = nums.length >= 3 ? nums[2] : null;
-    const w = nums.length >= 4 ? nums[3] : null;
+document.getElementById("outBox").textContent=
+`vector2(${current.x}, ${current.y})
+vector3(${current.x}, ${current.y}, ${current.z ?? 0})
+vector4(${current.x}, ${current.y}, ${current.z ?? 0}, ${current.w ?? 0})
+/tp ${current.x} ${current.y} ${current.z ?? 0}`
 
-    return { ok:true, msg:"Parsed successfully.", data:{ x,y,z,w,type, raw:text.trim() } };
-  }
+}
 
-  function updateUI(parsed) {
-    if (!parsed.ok) {
-      status.className = "status bad";
-      status.textContent = parsed.msg;
-      xVal.textContent = "—";
-      yVal.textContent = "—";
-      zVal.textContent = "—";
-      wVal.textContent = "—";
-      outBox.textContent = "—";
-      current = { x:null, y:null, z:null, w:null, type:null, raw:inp.value };
-      return;
-    }
+function copy(text){
+navigator.clipboard.writeText(text)
+status.className="status ok"
+status.textContent="Copied"
+}
 
-    current = parsed.data;
+document.getElementById("btnParse").onclick=parse
 
-    status.className = "status ok";
-    status.textContent = parsed.msg;
+document.getElementById("btnClear").onclick=()=>{
+inp.value=""
+status.textContent="Cleared"
+}
 
-    xVal.textContent = toFixedSmart(current.x);
-    yVal.textContent = toFixedSmart(current.y);
-    zVal.textContent = current.z === null ? "—" : toFixedSmart(current.z);
-    wVal.textContent = current.w === null ? "—" : toFixedSmart(current.w);
+document.getElementById("btnDemo").onclick=()=>{
+inp.value="vector4(468.52, -928.83, 28.45, 87.8)"
+parse()
+}
 
-    outBox.textContent =
-`Detected: ${current.type}
-X: ${toFixedSmart(current.x)}
-Y: ${toFixedSmart(current.y)}
-Z: ${current.z === null ? "—" : toFixedSmart(current.z)}
-W: ${current.w === null ? "—" : toFixedSmart(current.w)}
+document.getElementById("copyV2").onclick=()=>copy(`vector2(${current.x}, ${current.y})`)
+document.getElementById("copyV3").onclick=()=>copy(`vector3(${current.x}, ${current.y}, ${current.z ?? 0})`)
+document.getElementById("copyV4").onclick=()=>copy(`vector4(${current.x}, ${current.y}, ${current.z ?? 0}, ${current.w ?? 0})`)
+document.getElementById("copyTP").onclick=()=>copy(`/tp ${current.x} ${current.y} ${current.z ?? 0}`)
+document.getElementById("copyHeading").onclick=()=>copy(`SetEntityHeading(PlayerPedId(), ${current.w ?? 0})`)
 
-vector2: ${makeVector(2)}
-vector3: ${makeVector(3)}
-vector4: ${makeVector(4)}
-/tp: ${makeTP()}
-heading snippet: ${makeHeadingSnippet()}`;
-  }
+document.addEventListener("click",e=>{
+const btn=e.target.closest("button[data-copy]")
+if(!btn)return
+copy(current[btn.dataset.copy])
+})
 
-  function makeVector(dim) {
-    if (current.x === null || current.y === null) return "—";
-    const x = toFixedSmart(current.x);
-    const y = toFixedSmart(current.y);
-    const z = current.z === null ? "0.0" : toFixedSmart(current.z);
-    const w = current.w === null ? "0.0" : toFixedSmart(current.w);
-
-    if (dim === 2) return `vector2(${x}, ${y})`;
-    if (dim === 3) return `vector3(${x}, ${y}, ${z})`;
-    return `vector4(${x}, ${y}, ${z}, ${w})`;
-  }
-
-  function makeTP() {
-    if (current.x === null || current.y === null) return "—";
-    const x = toFixedSmart(current.x);
-    const y = toFixedSmart(current.y);
-    const z = current.z === null ? "0.0" : toFixedSmart(current.z);
-    // common admin tp format in many servers (x y z)
-    return `/tp ${x} ${y} ${z}`;
-  }
-
-  function makeHeadingSnippet() {
-    if (current.w === null || current.w === undefined) return "SetEntityHeading(PlayerPedId(), 0.0)";
-    return `SetEntityHeading(PlayerPedId(), ${toFixedSmart(current.w)})`;
-  }
-
-  async function copyText(text) {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast("Copied!");
-    } catch {
-      // fallback
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      toast("Copied!");
-    }
-  }
-
-  function toast(msg) {
-    status.className = "status ok";
-    status.textContent = msg;
-    setTimeout(() => {
-      const parsed = parseInput(inp.value);
-      updateUI(parsed);
-    }, 900);
-  }
-
-  function getHistory() {
-    try {
-      return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-    } catch { return []; }
-  }
-
-  function setHistory(items) {
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
-  }
-
-  function pushHistory(entry) {
-    if (!entry || !entry.trim()) return;
-    let items = getHistory().filter(x => x !== entry);
-    items.unshift(entry);
-    items = items.slice(0, MAX_HISTORY);
-    setHistory(items);
-    renderHistory();
-  }
-
-  function renderHistory() {
-    const box = $("history");
-    const items = getHistory();
-    box.innerHTML = "";
-    if (!items.length) {
-      const div = document.createElement("div");
-      div.className = "foot";
-      div.textContent = "No history yet. Parse something and it’ll show here.";
-      box.appendChild(div);
-      return;
-    }
-    items.forEach((txt) => {
-      const b = document.createElement("button");
-      b.textContent = txt.length > 120 ? (txt.slice(0,120) + "…") : txt;
-      b.title = txt;
-      b.addEventListener("click", () => {
-        inp.value = txt;
-        updateUI(parseInput(txt));
-      });
-      box.appendChild(b);
-    });
-  }
-
-  // Buttons
-  $("btnParse").addEventListener("click", () => {
-    const parsed = parseInput(inp.value);
-    updateUI(parsed);
-    if (parsed.ok) pushHistory(inp.value.trim());
-  });
-
-  $("btnPasteDemo").addEventListener("click", () => {
-    inp.value = "vector4(468.52, -928.83, 28.45, 87.8)";
-    const parsed = parseInput(inp.value);
-    updateUI(parsed);
-    pushHistory(inp.value.trim());
-  });
-
-  $("btnClear").addEventListener("click", () => {
-    inp.value = "";
-    detType.textContent = "—";
-    detCount.textContent = "0";
-    updateUI({ ok:false, msg:"Waiting for input…", data:null });
-  });
-
-  $("clearHistory").addEventListener("click", () => {
-    localStorage.removeItem(HISTORY_KEY);
-    renderHistory();
-  });
-
-  // Copy buttons
-  $("copyV2").addEventListener("click", () => copyText(makeVector(2)));
-  $("copyV3").addEventListener("click", () => copyText(makeVector(3)));
-  $("copyV4").addEventListener("click", () => copyText(makeVector(4)));
-  $("copyTP").addEventListener("click", () => copyText(makeTP()));
-  $("copyHeading").addEventListener("click", () => copyText(makeHeadingSnippet()));
-
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-copy]");
-    if (!btn) return;
-    const k = btn.getAttribute("data-copy");
-    const v = current[k];
-    copyText(v === null || v === undefined ? "" : String(v));
-  });
-
-  // Auto-parse (debounced)
-  let t = null;
-  inp.addEventListener("input", () => {
-    clearTimeout(t);
-    t = setTimeout(() => {
-      const parsed = parseInput(inp.value);
-      updateUI(parsed);
-      if (parsed.ok && inp.value.trim().length > 0) pushHistory(inp.value.trim());
-    }, 250);
-  });
-
-  // Init
-  renderHistory();
-  updateUI({ ok:false, msg:"Waiting for input…", data:null });
-})();
 </script>
+
 </body>
 </html>
